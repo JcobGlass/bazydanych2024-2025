@@ -1,0 +1,30 @@
+ZAD 1:
+CREATE TABLE postacie(id_postaci INTEGER primary key AUTO_INCREMENT, nazwa VARCHAR(40), rodzaj ENUM('wiking' , 'ptak' , 'kobieta'), data_ur DATE, wiek INTEGER UNSIGNED);
+INSERT INTO postacie(nazwa, rodzaj, data_ur, wiek)
+    -> VALUES ('Bjorn', 'wiking', '1980-05-14', 44),
+    -> ('Drozd', 'ptak', '2020-06-01', 4),
+    -> ('Tesciowa', 'kobieta', '1936-10-01', 87);
+UPDATE postacie SET wiek = 88 WHERE nazwa = 'Tesciowa';
+zad 2:
+CREATE TABLE walizka(id_walizki INTEGER primary key AUTO_INCREMENT, pojemnosc INTEGER UNSIGNED, kolor ENUM('rozowy', 'czerwony', 'teczowy', 'zolty'), id_wlasciciela INTEGER,  FOREIGN KEY(id_wlasciciela) REFERENCES postacie(id_post
+aci) ON DELETE CASCADE);
+ALTER TABLE walizka ALTER COLUMN kolor  SET DEFAULT 'rozowy';
+INSERT INTO walizka(id_walizki, pojemnosc, kolor, id_wlasciciela) VALUES (1, 50, 'rozowy', 1)
+INSERT INTO walizka(id_walizki, pojemnosc, kolor, id_wlasciciela) VALUES (2, 70, 'zolty', 2)
+zad 3:
+CREATE TABLE izba(adres_budynku VARCHAR(50) , nazwa_izby VARCHAR(50), metraz INTEGER UNSIGNED, wlasciciel INTEGER, FOREIGN KEY(wlasciciel) REFERENCES postacie(id_postaci) ON DELETE SET NULL, PRIMARY KEY(adres_budynku, nazwa_izby));
+ALTER TABLE izba ADD kolor_izby VARCHAR(40) DEFAULT 'czarny' AFTER metraz;
+ INSERT INTO izba(adres_budynku, nazwa_izby, metraz , wlasciciel) VALUES (1, 'spizarnia', '25', 'Bjorn');
+ZAD 2.1:
+DELETE FROM postacie ORDER BY data_ur ASC LIMIT 2;
+ALTER TABLE walizka DROP CONSTRAINT walizka_ibfk_1;
+ALTER TABLE izba DROP CONSTRAINT izba_ibfk_1;
+ALTER TABLE postacie DROP id_postaci;
+zad 2.2:
+ALTER TABLE postacie ADD pesel VARCHAR(11) PRIMARY KEY;
+ALTER TABLE postacie MODIFY COLUMN rodzaj ENUM('wiking','ptak','kobieta','syrena');
+
+
+
+
+

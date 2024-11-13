@@ -13,16 +13,85 @@ INSERT INTO walizka(id_walizki, pojemnosc, kolor, id_wlasciciela) VALUES (1, 50,
 INSERT INTO walizka(id_walizki, pojemnosc, kolor, id_wlasciciela) VALUES (2, 70, 'zolty', 2)
 zad 3:
 CREATE TABLE izba(adres_budynku VARCHAR(50) , nazwa_izby VARCHAR(50), metraz INTEGER UNSIGNED, wlasciciel INTEGER, FOREIGN KEY(wlasciciel) REFERENCES postacie(id_postaci) ON DELETE SET NULL, PRIMARY KEY(adres_budynku, nazwa_izby));
+zad 3.2:
 ALTER TABLE izba ADD kolor_izby VARCHAR(40) DEFAULT 'czarny' AFTER metraz;
- INSERT INTO izba(adres_budynku, nazwa_izby, metraz , wlasciciel) VALUES (1, 'spizarnia', '25', 'Bjorn');
+zad 3.3:
+INSERT INTO izba(adres_budynku, nazwa_izby, metraz , wlasciciel) VALUES (1, 'spizarnia', '25', 'Bjorn');
+zad 4.1:
+CREATE TABLE przetwory(id_przetworu INT PRIMARY KEY, rok_produkcji INT DEFAULT 1654, id_wykonawcy INT, zawartosc VARCHAR(50), dodatek VARCHAR(50) DEFAULT 'papryczka chili',FOREIGN KEY (id_wykonawcy) REFERENCES postacie(id_postaci), FOREIGN KEY(id_konsumenta) REFERENCES postacie(id_postaci)
+zad 4.2:
+INSERT INTO przetwory(zawartosc, dodatek)
+VALUES('bigos', 'papryczka chili');
+zad 5.1:
+INSERT INTO postacie(nazwa, rodzaj, data_ur, wiek)
+    -> VALUES ('Bergman', 'wiking', '1980-05-14', 24),
+    -> ('Bergman', 'wiking', '1981-02-11', 22),
+    -> ('Bergman', 'wiking', '1984-05-13', 21),
+       ('Bergman', 'wiking', '1981-04-15', 26),
+       ('Bergman', 'wiking', '1984-03-17', 23),
+zad 5.2:
+CREATE TABLE statek(nazwa_statku INT PRIMARY KEY, rodzaj_statku ENUM('okret','zaglowka','Wycieczkowiec', data_wodowania DATE, max_ladownosc INT UNSIGNED );
+ZAD 5.3:
+INSERT INTO statek(nazwa_statku, rodzaj_statku, data_wodowania, max_ladownosc)
+VALUES('Piernik','okret','1970-05-21',777),
+('Titanic','okret','1918-12-12',1200);
+ZAD 5.4:
+ALTER TABLE postacie ADD funkcja VARCHAR(50);
+ZAD 5.5:
+UPDATE postacie SET funkcja ='kapitan' WHERE nazwa='Bjorn';
+ZAD 5.6:
+FOREIGN KEY postacie(id_postaci) REFERENCES statek(nazwa_statku);
+zad 5.7:
+DELETE FROM izba WHERE nazwa='spizarnia';
+zad 5.8:
+DROP TABLE izba;
+ZAD 1:
+DELETE FROM postac
+WHERE funkcja = 'wiking' 
+  AND imie != 'Bjorn'
+  AND data_urodzenia IN (
+      SELECT data_urodzenia
+      FROM postac
+      WHERE funkcja = 'wiking'
+      ORDER BY data_urodzenia ASC
+      LIMIT 2);
+ZAD 1b:
+ALTER TABLE postac
+DROP FOREIGN KEY fk_statek;
+ALTER TABLE postac
+DROP PRIMARY KEY;
 ZAD 2.1:
-DELETE FROM postacie ORDER BY data_ur ASC LIMIT 2;
-ALTER TABLE walizka DROP CONSTRAINT walizka_ibfk_1;
-ALTER TABLE izba DROP CONSTRAINT izba_ibfk_1;
-ALTER TABLE postacie DROP id_postaci;
-zad 2.2:
 ALTER TABLE postacie ADD pesel VARCHAR(11) PRIMARY KEY;
+ZAD 2.2:
 ALTER TABLE postacie MODIFY COLUMN rodzaj ENUM('wiking','ptak','kobieta','syrena');
+ZAD 2.3:
+INSERT INTO postacie(nazwa,rodzaj)
+VALUES('Gertruda Nieszczera','syrena');
+ZAD 3.1:
+UPDATE statek SET nazwa_statku ='Bjorn' WHERE imie LIKE '%a%'
+ZAD 3.2:
+UPDATE statek
+SET max_ladownosc = max_ladownosc * 0.7
+WHERE YEAR(data_wodowania) BETWEEN 1901 AND 2000;
+zad 3.3:
+UPDATE postac
+SET funkcja ='wiking'
+WHERE TIMESTAMPDIFF(YEAR, data_urodzenia, CURDATE())<= 1000;
+ZAD 4.1:
+INSERT INTO postac (imie, funkcja, nazwa_statku)
+VALUES ('Loko', 'wąż', NULL);
+zad 4.2:
+CREATE TABLE Marynarz AS
+SELECT * 
+FROM postacie 
+WHERE nazwa_statku IS NOT NULL;
+zad 4.3:
+ALTER TABLE Marynarz
+ADD CONSTRAINT fk_nazwa_statku FOREIGN KEY (nazwa_statku)
+REFERENCES statek(nazwa_statku)
+ON DELETE CASCADE 
+ON UPDATE CASCADE; 
+zad 5.1:
 
 
 

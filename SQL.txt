@@ -92,8 +92,70 @@ REFERENCES statek(nazwa_statku)
 ON DELETE CASCADE 
 ON UPDATE CASCADE; 
 zad 5.1:
-
-
-
-
+DELETE FROM statek;
+zad 5.2:
+DELETE FROM postac
+WHERE funkcja = 'wiking' 
+   data_urodzenia IN (
+   SELECT data_urodzenia
+   FROM postac
+   WHERE funkcja = 'wiking';
+zad 5.4:
+DROP statek;
+zad 5.5:
+CREATE TABLE zwierzaki AS
+SELECT nazwa, rodzaj, data_ur, wiek
+FROM postacie
+WHERE typ ='ptak';
+zad 6.1:
+CREATE TABLE szklarskij.kreatura
+SELECT * FROM wikingowie.kreatura;
+INSERT INTO szklarskij.kreatura
+SELECT * FROM wikingowie.kreatura;
+CREATE TABLE szklarskij.zasob
+SELECT * FROM wikingowie.zasob;
+INSERT INTO szklarskij.zasob
+SELECT * FROM wikingowie.zasob;
+CREATE TABLE szklarskij.ekwipunek
+SELECT * FROM wikingowie.ekwipunek;
+INSERT INTO szklarskij.ekwipunek    
+SELECT * FROM wikingowie.ekwipunek;
+zad 6.2:
+SELECT* FROM zasob;
+zad 6.3:
+SELECT* FROM zasob WHERE typ='jedzenie';
+zad 6.4:
+SELECT idZasobu, ilosc
+FROM zasob
+WHERE id IN (1, 3, 5);
+zad 7.1:
+SELECT *
+FROM kreatura
+WHERE typ != 'wiedźma'
+AND waga >= 50;
+zad 7.2:
+SELECT * FROM zasob
+WHERE waga >=2 AND waga<=5;
+zad 7.3:
+SELECT* FROM kreatura
+WHERE nazwa LIKE "%or%"
+AND waga >=30 AND waga <=70;
+ZAD 8.1:
+SELECT* FROM zasob
+WHERE miesiac="lipiec" OR miesiac="sierpien";
+zad 8.2:
+SELECT* FROM zasob
+ORDER BY rodzaj, waga;
+zad 8.3:
+SELECT* FROM kreatura
+ORDER BY data_urodzenia ASC LIMIT 5;
+zad 9.1:
+SELECT DISTINCT rodzaj FROM zasob;
+zad 9.2:
+SELECT CONCAT(nazwa, ' - ', rodzaj) AS nazwa_rodzaj FROM kreatura
+WHERE rodzaj LIKE 'wi%';
+zad 9.3:
+SELECT rodzaj, (ilosc * waga) AS calkowita_waga FROM zasob
+WHERE rok_pozyskania BETWEEN 2000 AND 2007;
+zad 10.1:
 

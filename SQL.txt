@@ -158,4 +158,16 @@ zad 9.3:
 SELECT rodzaj, (ilosc * waga) AS calkowita_waga FROM zasob
 WHERE rok_pozyskania BETWEEN 2000 AND 2007;
 zad 10.1:
-
+SELECT AVG(waga) as srednia_waga FROM wikingowie;
+zad 10.2:
+SELECT rodzaj,AVG(waga) AS srednia_waga, COUNT(*) AS liczba_kreatur
+FROM Wikingowie
+GROUP BY rodzaj;
+zad 10.3:
+SELECT rodzaj, AVG(wiek) AS sredni_wiek FROM wikingowie ORDER BY rodzaj;
+zad 11.1:
+SELECT rodzaj, SUM(waga) AS suma_wagi_zasobu FROM zasoby;
+zad 11.2:
+SELECT nazwa, AVG(waga) AS srednia_waga FROM zasoby HAVING COUNT(*) >=4 AND SUM(waga) >10;
+zad 11.3:
+SELECT nazwa FROM zasoby HAVING MIN(id_zasobu) >1;

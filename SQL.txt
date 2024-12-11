@@ -240,3 +240,59 @@ JOIN wyprawa w ON u.id_wyprawy = w.id_wyprawy
 JOIN etapy_wyprawy e ON w.id_wyprawy = e.id_wyprawy
 JOIN sektor s ON e.id_etapu = s.id_etapu
 WHERE s.nazwa = 'Chatka Dziadka';
+zad 17.1:
+CREATE TRIGGER sprawdz_waga BEFORE INSERT OR UPDATE ON kreatura
+FOR EACH ROW
+BEGIN
+    IF IFNULL(NEW.weight, 0) <= 0 
+    THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Waga musi być większa od zera';
+    END IF;
+END;
+zad 17.2:
+CREATE TABLE archwium_wypraw(id_wyprawy PRIMARY KEY INT, nazwa VARCHAR(40), data_rozpoczecia DATE, data_zakonczenia DATE, kierownik VARCHAR(40)
+CREATE TRIGGER archiwum_wypraw2
+AFTER DELETE ON wyprawa
+FOR EACH ROW
+BEGIN
+    DECLARE kierownik_nazwa VARCHAR(100);
+    SELECT name INTO nazwa_kierownika
+    FROM kreatura
+    WHERE id = OLD.id_kreatury;
+        INSERT INTO archiwum_wypraw (id_wyprawy, nazwa, data_rozpoczecia, data_zakonczenia, kierownik)
+        VALUES (OLD.id_wyprawy, OLD.nazwa, OLD.data_rozpoczecia, OLD.data_zakonczenia, nazwa_kierownika);
+END;
+zad 18.1:
+CREATE PROCEDURE eliksir_sily(IN id_kreatury INT)
+BEGIN
+    UPDATE kreatura
+    SET udzwig = udzwig * 1.2
+    WHERE id_kreatury = kreatura_id;
+END;
+zad 18.2:
+CREATE FUNCTION na_duze(input_text VARCHAR(255))
+RETURNS VARCHAR(255)
+DETERMINISTIC
+BEGIN
+    RETURN UPPER(input_text);
+END;
+zad 19.1:
+CREATE TABLE system_alarmowy(id_alarmu PRIMARY KEY INT, wiadomosc VARCHAR(222)
+CREATE TRIGGER sprawdz_alarm AFTER INSERT ON wyprawy
+FOR EACH ROW
+BEGIN
+    IF NEW.teściowa_id IS NOT NULL AND NEW.sektor = 'domek dziadka' THEN
+        INSERT INTO system_alarmowy (wiadomosc)
+        VALUES ('Teściowa nadchodzi !!!');
+    END IF;
+END;
+zad 20.2:
+CREATE PROCEDURE posortowany_sektor(IN id_wyprawy INT)
+BEGIN
+    SELECT numer_sektora,nazwa_sektora FROM sektory
+    WHERE id_wyprawy = id_wyprawy
+    ORDER BY  numer_sektora; 
+END;
+
+
